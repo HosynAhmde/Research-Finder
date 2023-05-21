@@ -1,25 +1,46 @@
-module.exports = {
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir : __dirname, 
-    sourceType: 'module',
-  },
-  plugins: ['@typescript-eslint/eslint-plugin'],
-  extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
-  ],
+const { init } = require('@fullstacksjs/eslint-config/init');
+
+module.exports = init({
   root: true,
-  env: {
-    node: true,
-    jest: true,
+  modules: {
+    auto: true, // If you need auto module detection (refer to Auto Module Detection).
+    typescript: {
+      resolverProject: './tsconfig.json',
+      parserProject: './tsconfig.eslint.json',
+    },
+    graphql: false,
+    // Modules configuration check (optional). (refer to Module API)
   },
-  ignorePatterns: ['.eslintrc.js'],
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: ['tsconfig.json'],
+      },
+    },
+  },
+
   rules: {
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
   },
-};
+
+  overrides: [
+    {
+      files: ['**/*.spec.ts'],
+      rules: {
+        '@typescript-eslint/unbound-method': 'off',
+      },
+    },
+    {
+      files: ['**/*.helper.ts'],
+      rules: {
+        '@typescript-eslint/no-extraneous-class': 'off',
+      },
+    },
+    {
+      files: ['**/*.schema.ts', '**/*.dto.ts', '**/*.serializer.ts'],
+      rules: {
+        'fp/no-mutating-assign': 'off',
+      },
+    },
+  ],
+});
