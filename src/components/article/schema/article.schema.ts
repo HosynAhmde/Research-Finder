@@ -29,5 +29,5 @@ export class Article extends Schema<Article> {
   @Prop({ required: true })
   article_identifier: string;
 }
-export type articleCodument = Article & Document;
+export type ArticleDocument = Article & Document;
 export const ArticleSchema = SchemaFactory.createForClass(Article);

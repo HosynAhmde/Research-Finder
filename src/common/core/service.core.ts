@@ -2,7 +2,7 @@ import { CountFilter, Filter, OneFilter } from '@Common/interfaces';
 import { Repository } from './repository.core';
 
 export class Service<Schema, CreateDto, UpdateDto> {
-  constructor(private readonly repository: Repository<Schema, CreateDto, UpdateDto>) {}
+  constructor(protected readonly repository: Repository<Schema, CreateDto, UpdateDto>) {}
 
   count(filter: CountFilter<Document & Schema>): Promise<number> {
     return this.repository.count(filter);

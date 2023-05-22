@@ -2,7 +2,7 @@ import { UpdateDto } from '@Common/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateArticlesDto extends UpdateDto<UpdateArticlesDto> {
+export class UpdateArticleDto extends UpdateDto<UpdateArticleDto> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
