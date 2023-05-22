@@ -21,4 +21,4 @@ export interface Update<T = any, K = T> {
 }
 
 export type OneFilter<T = any> = Omit<Filter<T>, 'pagination'>;
-export type Countlter<T = any> = Omit<Filter<T>, 'pagination' | 'projection'>;
+export type CountFilter<T = any> = Omit<Filter<T>, 'pagination' | 'projection'>;
