@@ -1,9 +1,9 @@
 import { CountFilter, Filter, OneFilter } from '@Common/interfaces';
 import { sanitizeQuery } from '@Common/utils/tool.util';
-import { Model } from 'mongoose';
+import { type Document, type Model } from 'mongoose';
 
 export class Repository<Schema, CreateDto, UpdateDto> {
-  constructor(private readonly model: Model<Document & Schema>) {}
+  constructor(protected readonly model: Model<Document & Schema>) {}
 
   count(filter: CountFilter<Document & Schema>): Promise<number> {
     return this.model.countDocuments(sanitizeQuery(filter.query)).exec();
