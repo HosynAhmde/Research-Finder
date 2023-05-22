@@ -24,7 +24,7 @@ export class Article extends Schema<Article> {
   abstract: string;
 
   @Prop({ required: true })
-  keyword: string;
+  keyword: string[];
 
   @Prop({ required: true })
   article_identifier: string;
