@@ -10,3 +10,5 @@ export const sanitizeQuery = (obj: any) => {
     ...rest,
   });
 };
+
+export const toPlain = <T = any>(data: any): T => JSON.parse(JSON.stringify(data));
