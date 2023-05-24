@@ -1,6 +1,6 @@
 import { CountFilter, Filter, OneFilter } from '@Common/interfaces';
 import { Repository } from './repository.core';
-
+import { type Document } from 'mongoose';
 export class Service<Schema, CreateDto, UpdateDto> {
   constructor(protected readonly repository: Repository<Schema, CreateDto, UpdateDto>) {}
 
@@ -8,7 +8,7 @@ export class Service<Schema, CreateDto, UpdateDto> {
     return this.repository.count(filter);
   }
 
-  ctrate(createDto: CreateDto): Promise<Document & Schema> {
+  create(createDto: CreateDto): Promise<Document & Schema> {
     return this.repository.create(createDto);
   }
   findOne(filter: OneFilter<Document & Schema>): Promise<Document & Schema> | null {
