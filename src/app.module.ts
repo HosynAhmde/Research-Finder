@@ -1,11 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArticleModule } from './components/article/article.module';
-import { SearchModule } from './components/search/search.module';
+
+import { MongooseModule } from '@nestjs/mongoose';
+import { MONGO_CONFIG } from '@Common/configs/mongo.config';
+import { ConfigModule } from '@nestjs/config';
+import { ComponentsModule } from '@Components/components.module';
 
 @Module({
-  imports: [ArticleModule, SearchModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(MONGO_CONFIG()),
+    ComponentsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
