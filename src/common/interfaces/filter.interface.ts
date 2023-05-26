@@ -6,7 +6,7 @@ export type Projection<T = any> = ProjectionFields<T>;
 export interface Pagination<k = any> {
   skip: number;
   limit: number;
-  sort: { [key in keyof k]: SortOrder };
+  sort: { [key in keyof k]: SortOrder | { $meta: 'textScore' } };
 }
 
 export interface Filter<T = any, K = T> {

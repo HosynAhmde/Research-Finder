@@ -1,7 +1,9 @@
-import { Schema } from '@Common/schemas';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Model } from '@Common/schemas';
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { type Document } from 'mongoose';
-export class Article extends Schema<Article> {
+
+@Schema({ timestamps: true })
+export class Article extends Model<Article> {
   @Prop({ required: true })
   pmid: string;
 

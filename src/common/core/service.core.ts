@@ -15,7 +15,7 @@ export class Service<Schema, CreateDto, UpdateDto> {
     return this.repository.findOne(filter);
   }
 
-  find(filter: Filter<Document & Schema>): Promise<(Document & Schema)[]> {
+  find(filter: Filter<Document & Schema, Schema>): Promise<(Document & Schema)[]> {
     return this.repository.find(filter);
   }
 
