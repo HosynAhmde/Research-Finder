@@ -43,6 +43,7 @@ export class CreateArticleDto extends CreateDto<CreateArticleDto> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
+  @IsArray()
   keyword: string[];
 
   @ApiProperty()

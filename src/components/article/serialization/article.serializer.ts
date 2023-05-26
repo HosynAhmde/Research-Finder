@@ -1,9 +1,12 @@
 import { Serializer } from '@Common/serializers/base.serializer';
 import { Exclude, Expose } from '@nestjs/class-transformer';
-import { ArticleDocument } from '../schema';
+import { type ArticleDocument } from '../schema';
 
 @Exclude()
 export class ArticleSerializer extends Serializer<ArticleSerializer> {
+  @Expose()
+  pmid: string;
+
   @Expose()
   title: string;
 

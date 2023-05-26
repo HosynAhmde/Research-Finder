@@ -15,7 +15,7 @@ export class Repository<Schema, CreateDto, UpdateDto> {
   findOne(filter: OneFilter<Document & Schema>): Promise<Document & Schema> | null {
     return this.model.findOne(sanitizeQuery(filter.query), filter.projection).exec();
   }
-  find(filter: Filter<Document & Schema>): Promise<(Document & Schema)[]> {
+  find(filter: Filter<Document & Schema, Schema>): Promise<(Document & Schema)[]> {
     return this.model
       .find(sanitizeQuery(filter.query), filter.projection, {
         skip: filter.pagination?.skip,

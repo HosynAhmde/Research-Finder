@@ -1,5 +1,5 @@
 import { Exclude, Expose, Type } from '@nestjs/class-transformer';
-import { ArticleDocument } from '../schema';
+import { type ArticleDocument } from '../schema';
 import { ArticleSerializer } from './article.serializer';
 
 @Exclude()
