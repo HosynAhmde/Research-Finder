@@ -17,9 +17,10 @@ import { ArticlesSerializer } from './serialization/articles.serializer';
 import { Filter } from '@Common/decorators/filter.decorator';
 import { FilterDto } from '@Common/dto/filter.dto';
 import { ParseObjectIdPipe } from '@Common/pipes';
+import { QueryStringParserInterceptor } from '@Common/interceptors';
 @ApiTags('article')
 @Controller('article')
-@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(QueryStringParserInterceptor, ClassSerializerInterceptor)
 export class ArticleController {
   constructor(private readonly service: ArticleService) {}
 
