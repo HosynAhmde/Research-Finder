@@ -6,17 +6,18 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 @Module({
   imports: [
     ConfigModule,
-    ElasticsearchModule.register({
+    ElasticsearchModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
-        import: [ConfigServices],
         node: configService.get('ELASTICSEARCH_NODE'),
         auth: {
-          username: configService.get<string>('ELASTICSEARCH_USERNAME'),
-          password: configService.get<string>('ELASTICSEARCH_PASSWORD'),
+          username: configService.get('ELASTICSEARCH_USERNAME'),
+          password: configService.get('ELASTICSEARCH_PASSWORD'),
         },
       }),
+      inject: [ConfigService],
     }),
   ],
+  exports: [ElasticsearchModule],
   controllers: [SearchController],
   providers: [SearchService],
 })
