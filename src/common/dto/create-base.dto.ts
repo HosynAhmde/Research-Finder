@@ -7,12 +7,14 @@ export class CreateDto<T> {
   _id: Types.ObjectId;
 
   @IsMongoId()
-  @IsNotEmpty()
+  @IsOptional()
+  // @IsNotEmpty()
   created_by: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
+  @IsOptional()
   @IsDateString()
-  created_at: Date;
+  created_at?: Date;
 
   @IsOptional()
   @IsDateString()

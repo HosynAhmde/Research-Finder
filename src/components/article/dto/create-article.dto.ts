@@ -15,13 +15,13 @@ export class CreateArticleDto extends CreateDto<CreateArticleDto> {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
   @IsArray()
+  // @IsString()
   authors: string[];
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
+  // @IsString()
   @IsArray()
   affiliations: string[];
 
@@ -42,7 +42,7 @@ export class CreateArticleDto extends CreateDto<CreateArticleDto> {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
+  // @IsString()
   @IsArray()
   keyword: string[];
 
