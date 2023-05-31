@@ -1,6 +1,8 @@
 import { CountFilter, Filter, OneFilter } from '@Common/interfaces';
 import { Repository } from './repository.core';
 import { type Document } from 'mongoose';
+import { SearchService } from '@Components/search/search.service';
+
 export class Service<Schema, CreateDto, UpdateDto> {
   constructor(protected readonly repository: Repository<Schema, CreateDto, UpdateDto>) {}
 

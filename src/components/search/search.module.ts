@@ -25,11 +25,12 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
       inject: [ConfigService],
     }),
   ],
-  exports: [ElasticsearchModule],
+  exports: [ElasticsearchModule, SearchService],
   controllers: [SearchController],
   providers: [SearchService],
 })
 export class SearchModule implements OnModuleInit {
+  constructor(private readonly searchService: SearchService) {}
   onModuleInit() {
     console.log(`The module has been initialized.`);
   }

@@ -18,14 +18,18 @@ import { Filter } from '@Common/decorators/filter.decorator';
 import { FilterDto } from '@Common/dto/filter.dto';
 import { ParseObjectIdPipe } from '@Common/pipes';
 import { QueryStringParserInterceptor } from '@Common/interceptors';
+import { SearchService } from '@Components/search/search.service';
+import { log } from 'console';
 @ApiTags('article')
 @Controller('article')
 @UseInterceptors(QueryStringParserInterceptor, ClassSerializerInterceptor)
 export class ArticleController {
-  constructor(private readonly service: ArticleService) {}
+  constructor(private readonly service: ArticleService, private readonly search: SearchService) {}
 
   @Post()
   async create(@Body() dto: CreateArticleDto) {
+    await this.search.indexPost(dto);
+    log('dto', 'ls');
     return ArticleSerializer.build(await this.service.create(dto));
   }
 
@@ -36,7 +40,8 @@ export class ArticleController {
 
   @Get()
   async findAll(@Filter() filter: FilterDto<Article>) {
-    return ArticlesSerializer.build({ items: await this.service.find(filter.toObject()) });
+    // return ArticlesSerializer.build({ items: await this.service.find(filter.toObject()) });
+    return await this.search.search('fuck');
   }
 
   @Delete(':id')
