@@ -1,7 +1,7 @@
 import { Role } from '@Common/enum/roles.enum';
 import { Model } from '@Common/schemas';
-import { Prop } from '@nestjs/mongoose';
-
+import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { type Document } from 'mongoose';
 export class User extends Model<User> {
   @Prop({ required: true })
   name: string;
@@ -18,3 +18,5 @@ export class User extends Model<User> {
   @Prop({ required: true })
   password: string;
 }
+export type UserDocument = User & Document;
+export const UserSchema = SchemaFactory.createForClass(User);
