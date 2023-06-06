@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 export const BCRYPT_SALT = 10;
 export class Bcrypt {
   static hashSync(pass: string): string {

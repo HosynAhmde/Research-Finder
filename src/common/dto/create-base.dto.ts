@@ -4,12 +4,12 @@ import { Types } from 'mongoose';
 
 export class CreateDto<T> {
   @Exclude()
-  _id: Types.ObjectId;
+  _id?: Types.ObjectId;
 
   @IsMongoId()
   @IsOptional()
   // @IsNotEmpty()
-  created_by: string;
+  created_by?: string;
 
   // @IsNotEmpty()
   @IsOptional()

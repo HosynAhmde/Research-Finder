@@ -3,19 +3,19 @@ import { Model } from '@Common/schemas';
 import { Prop, SchemaFactory } from '@nestjs/mongoose';
 import { type Document } from 'mongoose';
 export class User extends Model<User> {
-  @Prop({ required: true })
+  @Prop()
   name: string;
 
-  @Prop({ required: true })
+  @Prop()
   last_name: string;
 
-  @Prop({ required: true })
+  @Prop()
   email: string;
 
-  @Prop({ required: true, type: [String], default: [Role.GUEST] })
+  @Prop({ type: [String], default: [Role.USER] })
   roles: [Role];
 
-  @Prop({ required: true })
+  @Prop()
   password: string;
 }
 export type UserDocument = User & Document;
