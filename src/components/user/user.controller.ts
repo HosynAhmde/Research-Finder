@@ -7,7 +7,7 @@ import { UserSerializer } from './serializer/user.serializer';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('create')
+  @Post()
   async create(@Body() dto: CreateUserDto) {
     return UserSerializer.build(await this.userService.create(dto));
   }
