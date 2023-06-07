@@ -1,7 +1,8 @@
 import { Role } from '@Common/enum/roles.enum';
 import { Model } from '@Common/schemas';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { type Document } from 'mongoose';
+@Schema()
 export class User extends Model<User> {
   @Prop()
   name: string;

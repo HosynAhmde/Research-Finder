@@ -1,7 +1,8 @@
 import { Model } from '@Common/schemas';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { type Document } from 'mongoose';
 
+@Schema()
 export class Session extends Model<Session> {
   @Prop({ required: false })
   agent?: string;
