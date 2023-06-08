@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { type RegisterDto } from './dto';
+import { LoginDto, type RegisterDto } from './dto';
 import { UserService } from '@Components/user/user.service';
 import { Bcrypt, Md5 } from '@Common/helpers';
 import { type UserDocument } from '@Components/user/schema';
@@ -39,7 +39,19 @@ export class AuthService {
 
     return this.generateUserResponse(newUser);
   }
-  // async login(loginDto: LoginDto) {}
+  async login(loginDto: LoginDto) {
+    const { email, password } = loginDto;
+
+    const user = await this.userService.findOne({ query: { email } });
+
+    if (!user) throw new BadRequestException('AUTH.USER_NOT_FOUND');
+
+    const isPasswordValid = await Bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) throw new BadRequestException('AUTH.INVALID_PASSWORD');
+
+    return this.generateUserResponse(user);
+  }
   // async logout(logoutDto: LogoutDto) {}
   // async refreshToken(refreshTokenDto: RefreshTokenDto) {}
 
