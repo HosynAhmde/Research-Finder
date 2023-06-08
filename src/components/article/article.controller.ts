@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Res,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -20,13 +21,18 @@ import { ParseObjectIdPipe } from '@Common/pipes';
 import { QueryStringParserInterceptor } from '@Common/interceptors';
 import { SearchService } from '@Components/search/search.service';
 import { log } from 'console';
+import { SetResource } from '@Common/metadata';
+import { Action, Resource } from '@Common/enum';
+import { SetPolicy } from '@Common/metadata/set-policy.metadata';
 @ApiTags('article')
 @Controller('article')
+@SetResource(Resource.Article)
 @UseInterceptors(QueryStringParserInterceptor, ClassSerializerInterceptor)
 export class ArticleController {
   constructor(private readonly service: ArticleService, private readonly search: SearchService) {}
 
-  @Post()
+  @Post('create')
+  @SetPolicy(Action.Create)
   async create(@Body() dto: CreateArticleDto) {
     await this.search.indexPost(dto);
     log('dto', 'ls');
