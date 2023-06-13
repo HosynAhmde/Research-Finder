@@ -1,6 +1,6 @@
 import { Env, getEnv } from '@fullstacksjs/toolbox';
 
-export const AUTH_CONGIG = () => ({
+export const AUTH_CONFIG = () => ({
   ACCESS_TOKEN: {
     secret: process.env.ACCESS_TOKEN_SECRET,
 
