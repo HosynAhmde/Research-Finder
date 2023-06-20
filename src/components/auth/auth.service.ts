@@ -10,11 +10,11 @@ import { SessionService } from './session.service';
 
 import { AES } from '@Common/helpers/aes.helper';
 import { JwtService } from '@nestjs/jwt';
-import { AUTH_CONGIG } from '@Common/configs';
+import { AUTH_CONFIG } from '@Common/configs';
 import { log } from 'console';
 import { getEnv } from '@fullstacksjs/toolbox';
 
-const { ACCESS_TOKEN, REFRESH_TOKEN } = AUTH_CONGIG();
+const { ACCESS_TOKEN, REFRESH_TOKEN } = AUTH_CONFIG();
 console.log(getEnv('ACCESS_TOKEN_SECRET'));
 
 @Injectable()

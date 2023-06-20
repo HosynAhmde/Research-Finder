@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { PostSearchResult } from './interface';
 import { ConfigService } from '@nestjs/config';
+import { CreateIndex } from './dto';
 
 @Injectable()
 export class SearchService {
@@ -50,26 +51,32 @@ export class SearchService {
     }
   }
 
-  async indexPost(article: any) {
-    return await this.elasticSearch.index({
+  async indexArticle(article: CreateIndex) {
+    await this.elasticSearch.index({
       index: this.configService.get('ELASTICSEARCH_INDEX'),
       body: article,
     });
+    return true;
   }
 
-  async search(text: string) {
+  async fullTextSearch(@Query() query: string) {
+    const s = query;
+    console.log(s);
+
     const body = await this.elasticSearch.search<any>({
       index: this.configService.get('ELASTICSEARCH_INDEX'),
-      body: {
-        query: {
-          multi_match: {
-            query: text,
-            fields: ['title', 'abstract'],
-          },
+
+      query: {
+        match: {
+          query: s,
         },
       },
     });
     const hits = body.hits.hits;
-    return hits.map(item => item._source);
+    const filteredHits = hits.map(item => {
+      const { pmid, ...source } = item._source;
+      return source;
+    });
+    return filteredHits;
   }
 }

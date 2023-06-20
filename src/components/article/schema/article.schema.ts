@@ -5,30 +5,36 @@ import { type Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class Article extends Model<Article> {
   @Prop({ required: true })
-  pmid: string;
-
-  @Prop({ required: true })
   title: string;
 
   @Prop({ required: true })
   authors: string[];
 
-  @Prop({ required: true })
+  @Prop()
+  pmid: string;
+
+  @Prop()
   affiliations: string[];
 
-  @Prop({ required: true })
+  @Prop()
   journal_title: string;
 
-  @Prop({ required: true })
+  @Prop()
   place_of_publication: string;
 
   @Prop({ required: true })
   abstract: string;
 
-  @Prop({ required: true })
-  keyword: string[];
+  @Prop()
+  keywords: string[];
 
-  @Prop({ required: true })
+  @Prop()
+  doi: string;
+
+  @Prop()
+  issn: string;
+
+  @Prop()
   article_identifier: string;
 }
 export type ArticleDocument = Article & Document;

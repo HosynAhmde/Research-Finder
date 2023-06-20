@@ -9,14 +9,20 @@ export class CreateIndex extends CreateDto<CreateIndex> {
   title: string;
 
   @IsString()
+  authors: string[];
+
+  @IsString()
+  journal_title: string;
+
+  @IsString()
+  doi: string;
+
+  @IsString()
+  issn: string;
+
+  @IsString()
   abstract: string;
 
   @IsString()
-  journal: string;
-
-  @IsArray()
-  authors: string[];
-
-  @IsArray()
   keywords: string[];
 }
