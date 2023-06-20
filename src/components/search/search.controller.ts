@@ -1,11 +1,23 @@
 import { CreateArticleDto } from '@Components/article/dto';
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { PostSearchResult } from './interface';
 import { SearchService } from './search.service';
 import { Article } from '@Components/article/schema';
+import { CreateIndex } from './dto';
 
 @Controller('search')
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
-  async createIndex(article: Article): Promise<any> {}
+
+  @Post()
+  async createIndex(@Body() article: CreateIndex): Promise<boolean> {
+    return await this.searchService.indexArticle(article);
+  }
+
+  @Get()
+  async search(@Query() query: string) {
+    console.log(query);
+
+    return await this.searchService.fullTextSearch(query);
+  }
 }
