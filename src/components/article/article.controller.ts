@@ -46,7 +46,7 @@ export class ArticleController {
   @Get()
   async findAll(@Filter() filter: FilterDto<Article>) {
     // return ArticlesSerializer.build({ items: await this.service.find(filter.toObject()) });
-    return await this.search.fullTextSearch('gastric');
+    // return await this.search.fullTextSearch('gastric');
   }
 
   @Delete(':id')
