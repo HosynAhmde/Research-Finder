@@ -1,6 +1,8 @@
+import { Role } from '@Common/enum';
 import { Filter } from '@Common/interfaces';
 import { JwtToken } from '@Components/auth/interface';
 import { UserDocument } from '@Components/user/schema';
+import { Permission } from 'abacl';
 import { type Request } from 'express';
 
 export interface AppRequest extends Request {
@@ -15,9 +17,7 @@ export interface AppRequest extends Request {
 
   // userAgent: IResult;
 
-  // permission?: Permission<Role>;
-
-  files: File[];
+  permission?: Permission<Role>;
 
   id?: string;
 }
