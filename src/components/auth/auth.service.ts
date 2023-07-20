@@ -1,26 +1,23 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { LoginDto, type RegisterDto } from './dto';
 import { UserService } from '@Components/user/user.service';
-import { Bcrypt, Md5 } from '@Common/helpers';
+import { Bcrypt } from '@Common/helpers';
 import { type UserDocument } from '@Components/user/schema';
 import { Role } from '@Common/enum';
 import { type SessionDocument } from './schema';
 import { JwtToken } from './interface';
 import { SessionService } from './session.service';
-
-import { AES } from '@Common/helpers/aes.helper';
+import { AES, Time } from '@Common/helpers';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_CONFIG } from '@Common/configs';
-import { log } from 'console';
-import { getEnv } from '@fullstacksjs/toolbox';
+import { BlacklistedService } from '@Common/modules/blacklisted';
 
 const { ACCESS_TOKEN, REFRESH_TOKEN } = AUTH_CONFIG();
-console.log(getEnv('ACCESS_TOKEN_SECRET'));
-
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
+    private readonly blacklistedService: BlacklistedService,
     private readonly sessionService: SessionService,
     private readonly jwtService: JwtService,
   ) {}
@@ -30,14 +27,13 @@ export class AuthService {
 
     const user = await this.userService.findOne({ query: { email } });
 
-    if (user) throw new BadRequestException('AUTH.EMALI_IS_ALREADY_IN_USE');
+    if (user) throw new BadRequestException('AUTH.EMAIL_IS_ALREADY_IN_USE');
 
     const password = await Bcrypt.hash(nonHashPassword);
 
-    const newUser = await this.userService.create(registerDto);
-    console.log(newUser);
+    const newUser = await this.userService.create({ email, password });
 
-    return this.generateUserResponse(newUser);
+    return true;
   }
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
@@ -52,11 +48,33 @@ export class AuthService {
 
     return this.generateUserResponse(user);
   }
-  // async logout(logoutDto: LogoutDto) {}
-  // async refreshToken(refreshTokenDto: RefreshTokenDto) {}
 
+  async refreshToken(refreshToken: JwtToken) {
+    const session = await this.sessionService.findById({
+      query: { id: refreshToken.session },
+    });
+
+    if (!session) throw new UnauthorizedException('AUTH.INVALID_CREDENTIALS');
+
+    const user = await this.userService.findOne({
+      query: { id: refreshToken.sub },
+    });
+
+    if (!user) throw new UnauthorizedException('AUTH.INVALID_CREDENTIALS');
+
+    return this.generateUserResponse(user);
+  }
+
+  async logout(refreshToken: JwtToken): Promise<boolean> {
+    try {
+      await this.blacklistedService.put(refreshToken.session, Time.remainedTime(refreshToken.exp!));
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
   private async generateUserResponse(user: UserDocument) {
-    const cachedToken = await this.setCachToken(user._id, { roles: user.roles });
+    const cachedToken = await this.setCacheToken(user._id, { roles: user.roles });
 
     return {
       ...this.createToken(cachedToken.payload),
@@ -64,9 +82,9 @@ export class AuthService {
     };
   }
 
-  protected async setCachToken(
+  protected async setCacheToken(
     userId: string,
-    meta: { roles: Role[]; session?: SessionDocument; cold?: boolean },
+    meta: { roles: Role[]; session?: SessionDocument },
   ): Promise<{ payload: JwtToken }> {
     let session: SessionDocument;
 
@@ -85,10 +103,10 @@ export class AuthService {
 
   protected createToken(payload: JwtToken) {
     return {
-      access_token: AES.encrypt(
+      accessToken: AES.encrypt(
         this.jwtService.sign(payload, { secret: ACCESS_TOKEN.secret, expiresIn: ACCESS_TOKEN.expiration }),
       ),
-      refresh_token: AES.encrypt(
+      refreshToken: AES.encrypt(
         this.jwtService.sign(payload, { secret: REFRESH_TOKEN.secret, expiresIn: REFRESH_TOKEN.expiration }),
       ),
     };

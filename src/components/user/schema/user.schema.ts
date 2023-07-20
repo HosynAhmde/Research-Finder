@@ -13,7 +13,7 @@ export class User extends Model<User> {
   @Prop()
   email: string;
 
-  @Prop({ type: [String], default: [Role.USER] })
+  @Prop({ type: [String], default: [Role.User] })
   roles: [Role];
 
   @Prop()
