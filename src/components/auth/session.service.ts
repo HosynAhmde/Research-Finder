@@ -1,7 +1,7 @@
 import { Service } from '@Common/core';
 import { Injectable } from '@nestjs/common';
 import { Session } from './schema';
-import { SessionRepository } from './sesseion.repository';
+import { SessionRepository } from './session.repository';
 
 @Injectable()
 export class SessionService extends Service<Session, any, any> {

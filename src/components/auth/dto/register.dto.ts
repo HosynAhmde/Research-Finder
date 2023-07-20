@@ -5,8 +5,8 @@ export class RegisterDto {
   @IsEmail()
   email: string;
 
-  @IsString()
   @IsNotEmpty()
+  @IsString()
   @MinLength(8)
   @MaxLength(20)
   password: string;
