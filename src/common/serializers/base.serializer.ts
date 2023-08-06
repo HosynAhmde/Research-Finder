@@ -1,4 +1,4 @@
-import { ConvertModel } from '@Common/utils/model.util';
+import { toPlain } from '@Common/utils';
 import { Exclude, Expose } from '@nestjs/class-transformer';
 
 @Exclude()
@@ -25,6 +25,6 @@ export class Serializer<T> {
   deleted_by?: string;
 
   constructor(data?: Partial<T>) {
-    if (data) Object.assign(this, ConvertModel(data));
+    if (data) Object.assign(this, toPlain(data));
   }
 }

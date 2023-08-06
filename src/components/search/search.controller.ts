@@ -1,11 +1,15 @@
 import { CreateArticleDto } from '@Components/article/dto';
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
 import { PostSearchResult } from './interface';
 import { SearchService } from './search.service';
 import { Article } from '@Components/article/schema';
 import { CreateIndex } from './dto';
+import { Filter } from '@Common/decorators';
+import { FilterDto } from '@Common/dto';
+import { QueryStringParserInterceptor } from '@Common/interceptors';
 
 @Controller('search')
+@UseInterceptors(QueryStringParserInterceptor, ClassSerializerInterceptor)
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
@@ -16,7 +20,7 @@ export class SearchController {
 
   @Get()
   async search(@Query() query: string) {
-    // console.log(query);
+    console.log(query);
 
     return await this.searchService.fullTextSearch(query);
   }
