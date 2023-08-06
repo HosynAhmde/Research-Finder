@@ -1,5 +1,5 @@
 import { CreateDto } from '@Common/dto';
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class CreateIndex extends CreateDto<CreateIndex> {
   @IsString()
@@ -8,7 +8,8 @@ export class CreateIndex extends CreateDto<CreateIndex> {
   @IsString()
   title: string;
 
-  @IsString()
+  @IsArray()
+  @IsString({ each: true })
   authors: string[];
 
   @IsString()
@@ -23,6 +24,8 @@ export class CreateIndex extends CreateDto<CreateIndex> {
   @IsString()
   abstract: string;
 
-  @IsString()
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
   keywords: string[];
 }

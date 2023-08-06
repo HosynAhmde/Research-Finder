@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { CreateIndex } from './dto';
 import { Article } from '@Components/article/schema';
 import { match } from 'assert';
+import { log } from 'console';
 
 @Injectable()
 export class SearchService {
@@ -60,13 +61,14 @@ export class SearchService {
     });
   }
 
-  async fullTextSearch(@Query() query: string) {
+  async fullTextSearch(query: any) {
+    log(query);
     const body = await this.elasticSearch.search<any>({
       index: this.configService.get('ELASTICSEARCH_INDEX'),
       body: {
         query: {
           match: {
-            query: query,
+            title: query,
           },
         },
       },
