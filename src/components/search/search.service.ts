@@ -61,20 +61,24 @@ export class SearchService {
     });
   }
 
-  async fullTextSearch(query: any) {
-    log(query);
-    const body = await this.elasticSearch.search<any>({
-      index: this.configService.get('ELASTICSEARCH_INDEX'),
+  async fullTextSearch(@Query('query') query: string) {
+    console.log(query);
+
+    // const { ELASTICSEARCH_INDEX } = this.configService.get();
+    const body = await this.elasticSearch.search<PostSearchResult>({
+      index: 'articles',
       body: {
         query: {
-          match: {
-            title: query,
+          multi_match: {
+            query: query,
+            fields: ['title', 'abstract', 'authors', 'affiliations', 'journal_title', 'keyword'],
+            type: 'phrase',
           },
         },
       },
     });
-    const hits = body.hits.hits;
-    return hits.map(item => item._source);
+
+    return body.hits.hits.map((item: any) => item._source);
   }
 
   async searchByKeyword(@Query('title') title: string, @Query('abstract') abstract: string) {
