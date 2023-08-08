@@ -1,5 +1,5 @@
 import { CreateArticleDto } from '@Components/article/dto';
-import { Body, ClassSerializerInterceptor, Controller, Get, Post, Query, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Query, UseInterceptors } from '@nestjs/common';
 import { PostSearchResult } from './interface';
 import { SearchService } from './search.service';
 import { Article } from '@Components/article/schema';
@@ -19,10 +19,10 @@ export class SearchController {
   }
 
   @Get()
-  async search(@Query() query: string) {
-    console.log(query);
+  async search(@Query('query') query: string) {
+    // Removed the unnecessary console.log statement
 
-    return await this.searchService.fullTextSearch(query);
+    return this.searchService.fullTextSearch(query);
   }
 
   @Get('keyword')
