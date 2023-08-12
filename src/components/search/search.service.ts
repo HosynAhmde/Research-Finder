@@ -54,6 +54,12 @@ export class SearchService {
   //   }
   // }
 
+  async getAllArticles() {
+    return await this.elasticSearch.search<Article>({
+      index: this.configService.get('ELASTICSEARCH_INDEX'),
+    });
+  }
+
   async indexArticle(article: CreateIndex) {
     return await this.elasticSearch.index({
       index: this.configService.get('ELASTICSEARCH_INDEX'),
@@ -84,42 +90,27 @@ export class SearchService {
   async searchByKeyword(@Query('title') title: string, @Query('abstract') abstract: string) {
     console.log(title, abstract);
 
-    const body = await this.elasticSearch.search<any>({
-      index: this.configService.get('ELASTICSEARCH_INDEX'),
+    if (!title && !abstract) {
+      return [];
+    }
 
-      query: {
-        bool: {
-          must: [
-            {
-              match: {
-                title: title,
+    const body = await this.elasticSearch.search<any>({
+      index: 'articles',
+      body: {
+        query: {
+          bool: {
+            must: [
+              {
+                match_phrase: {
+                  title: title,
+                  abstract: abstract,
+                },
               },
-            },
-            {
-              match: {
-                abstract: abstract,
-              },
-            },
-          ],
+            ],
+          },
         },
       },
-
-      // query: {
-      //   multi_match: {
-      //     query: title,
-      //     fields: ['title', 'abstract'],
-      //   },
-      // },
     });
-    const hits = body.hits.hits;
-    // const filteredHits = hits.map(item => {
-    //   const { pmid, ...source } = item._source;
-    //   return source;
-    // });
-    // return filteredHits;
-    const source = hits.map(item => {
-      item._source;
-    });
-    return source;
+    return body.hits.hits.map((item: any) => item?._source);
   }
 }
