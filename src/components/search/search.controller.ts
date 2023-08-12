@@ -19,6 +19,11 @@ export class SearchController {
   }
 
   @Get()
+  async getAllArticles() {
+    return await this.searchService.getAllArticles();
+  }
+
+  @Get('search')
   async search(@Query('query') query: string) {
     // Removed the unnecessary console.log statement
 
