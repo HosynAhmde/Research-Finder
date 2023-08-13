@@ -1,0 +1,57 @@
+version: '3.7'
+
+networks:
+  research-finder:
+    driver: bridge
+
+services:
+  redis:
+    image: redis:6.2-alpine
+
+    ports:
+      - 6379:6379
+    networks:
+      - research-finder
+
+    volumes:
+      - redis:/var/lib/redis
+
+    environment:
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
+    restart: always
+
+  mongodb:
+    image: mongo:5.0.1
+
+    ports:
+      - 27017:27017
+    networks:
+      - research-finder
+
+    volumes:
+      - mongo:/data/db
+
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.7.0
+
+    ports:
+      - 9200:9200
+    networks:
+      - research-finder
+
+    volumes:
+      - elastic:/usr/share/elasticsearch/data
+
+    environment:
+      - ELASTICSEARCH_NODE=${ELASTICSEARCH_NODE}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+
+    restart: always
+
+volumes:
+  redis:
+  mongo:
+  elastic:
