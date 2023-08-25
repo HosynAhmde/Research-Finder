@@ -1,4 +1,4 @@
-import { Exclude } from '@nestjs/class-transformer';
+import { Exclude } from 'class-transformer';
 import { IsDateString, IsMongoId, IsNotEmpty, IsOptional } from 'class-validator';
 import { Types } from 'mongoose';
 
@@ -9,31 +9,32 @@ export class UpdateDto<T> {
   @IsMongoId()
   @IsOptional()
   @IsNotEmpty()
-  created_by?: string;
+  createdBy: string;
 
   @IsOptional()
   @IsOptional()
   @IsDateString()
-  created_at?: Date;
+  createdAt: Date;
 
   @IsOptional()
   @IsDateString()
-  updated_at?: Date;
+  updatedAt?: Date;
 
   @IsMongoId()
   @IsNotEmpty()
   @IsOptional()
-  updated_by?: string;
+  updatedBy?: string;
 
   @IsOptional()
   @IsDateString()
-  deleted_at?: Date;
+  deletedAt?: Date;
 
   @IsMongoId()
   @IsNotEmpty()
   @IsOptional()
-  deleted_by?: string;
-  constructor(data: Partial<T>) {
+  deletedBy?: string;
+
+  constructor(data?: Partial<T>) {
     if (data) Object.assign(this, data);
   }
 }

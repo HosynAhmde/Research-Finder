@@ -3,4 +3,5 @@ export enum Resource {
 
   User = 'user',
   Article = 'article',
+  Asset = 'asset',
 }

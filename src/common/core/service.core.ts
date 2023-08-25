@@ -1,7 +1,8 @@
-import { CountFilter, Filter, OneFilter } from '@Common/interfaces';
+import { CountFilter, Filter, ItemsWithMetadata, OneFilter } from '@Common/interfaces';
 import { Repository } from './repository.core';
 import { type Document } from 'mongoose';
 import { SearchService } from '@Components/search/search.service';
+import { createPaginationMetadata } from '@Common/utils';
 
 export class Service<Schema, CreateDto, UpdateDto> {
   constructor(protected readonly repository: Repository<Schema, CreateDto, UpdateDto>) {}
@@ -17,8 +18,12 @@ export class Service<Schema, CreateDto, UpdateDto> {
     return this.repository.findOne(filter);
   }
 
-  find(filter: Filter<Document & Schema, Schema>): Promise<(Document & Schema)[]> {
-    return this.repository.find(filter);
+  async find(filter: Filter<Document & Schema, Schema>): Promise<ItemsWithMetadata<Document & Schema>> {
+    const [count, items] = await Promise.all([this.count(filter), this.repository.find(filter)]);
+
+    const metadata = createPaginationMetadata(count, filter.pagination.limit, filter.pagination.page);
+
+    return { items, metadata };
   }
 
   findById(filter: OneFilter<Document & Schema>): Promise<Document & Schema> | null {

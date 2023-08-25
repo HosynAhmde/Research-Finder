@@ -37,7 +37,12 @@ module.exports = init({
       },
     },
     {
-      files: ['**/*.schema.ts', '**/*.dto.ts', '**/*.serializer.ts'],
+      files: [
+        '**/*.schema.ts',
+        '**/*.dto.ts',
+        '**/*.serializer.ts',
+        '**/*.serializers.ts',
+      ],
       rules: {
         'fp/no-mutating-assign': 'off',
       },

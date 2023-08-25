@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginDto, type RegisterDto } from './dto';
 import { UserService } from '@Components/user/user.service';
 import { Bcrypt } from '@Common/helpers';
@@ -31,7 +35,7 @@ export class AuthService {
 
     const password = await Bcrypt.hash(nonHashPassword);
 
-    const newUser = await this.userService.create({ email, password });
+    await this.userService.create({ email, password });
 
     return true;
   }
@@ -44,7 +48,8 @@ export class AuthService {
 
     const isPasswordValid = await Bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) throw new BadRequestException('AUTH.INVALID_PASSWORD');
+    if (!isPasswordValid)
+      throw new BadRequestException('AUTH.INVALID_PASSWORD');
 
     return this.generateUserResponse(user);
   }
@@ -67,14 +72,19 @@ export class AuthService {
 
   async logout(refreshToken: JwtToken): Promise<boolean> {
     try {
-      await this.blacklistedService.put(refreshToken.session, Time.remainedTime(refreshToken.exp!));
+      await this.blacklistedService.put(
+        refreshToken.session,
+        Time.remainedTime(refreshToken.exp!),
+      );
       return true;
     } catch (err) {
       return false;
     }
   }
   private async generateUserResponse(user: UserDocument) {
-    const cachedToken = await this.setCacheToken(user._id, { roles: user.roles });
+    const cachedToken = await this.setCacheToken(user._id, {
+      roles: user.roles,
+    });
 
     return {
       ...this.createToken(cachedToken.payload),
@@ -89,7 +99,7 @@ export class AuthService {
     let session: SessionDocument;
 
     if (!meta.session) {
-      session = await this.sessionService.create({ created_by: userId });
+      session = await this.sessionService.create({ createdBy: userId });
     } else session = meta.session;
 
     const payload: JwtToken = {
@@ -104,10 +114,16 @@ export class AuthService {
   protected createToken(payload: JwtToken) {
     return {
       accessToken: AES.encrypt(
-        this.jwtService.sign(payload, { secret: ACCESS_TOKEN.secret, expiresIn: ACCESS_TOKEN.expiration }),
+        this.jwtService.sign(payload, {
+          secret: ACCESS_TOKEN.secret,
+          expiresIn: ACCESS_TOKEN.expiration,
+        }),
       ),
       refreshToken: AES.encrypt(
-        this.jwtService.sign(payload, { secret: REFRESH_TOKEN.secret, expiresIn: REFRESH_TOKEN.expiration }),
+        this.jwtService.sign(payload, {
+          secret: REFRESH_TOKEN.secret,
+          expiresIn: REFRESH_TOKEN.expiration,
+        }),
       ),
     };
   }

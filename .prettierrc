@@ -4,7 +4,7 @@
   "endOfLine": "lf",
   "insertPragma": false,
   "bracketSameLine": false,
-  "printWidth": 120,
+  "printWidth": 80,
   "proseWrap": "always",
   "quoteProps": "consistent",
   "requirePragma": false,

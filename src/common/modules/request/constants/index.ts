@@ -1,1 +1,1 @@
-export * from './request.enum.constans';
+export * from './request.enum.constant';

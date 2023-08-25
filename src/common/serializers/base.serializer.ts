@@ -1,28 +1,28 @@
 import { toPlain } from '@Common/utils';
-import { Exclude, Expose } from '@nestjs/class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()
 export class Serializer<T> {
-  @Expose()
-  id: string;
+  @Expose({ name: 'id' })
+  _id: string;
 
   @Expose()
-  created_at: Date;
+  createdAt: Date;
 
   @Expose()
-  created_by: string;
+  createdBy: string;
 
   @Expose()
-  updated_at?: Date;
+  updatedAt?: Date;
 
   @Expose()
-  updated_by?: string;
+  updatedBy?: string;
 
   @Expose()
-  deleted_at?: Date;
+  deletedAt?: Date;
 
   @Expose()
-  deleted_by?: string;
+  deletedBy?: string;
 
   constructor(data?: Partial<T>) {
     if (data) Object.assign(this, toPlain(data));

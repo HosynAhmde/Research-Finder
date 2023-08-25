@@ -3,22 +3,22 @@ import { Prop, Schema } from '@nestjs/mongoose';
 @Schema()
 export class Model<T> {
   @Prop()
-  created_by?: string;
+  createdBy?: string;
 
   @Prop({ default: () => new Date() })
-  created_at: Date;
+  createdAt: Date;
 
   @Prop({ required: false })
-  deleted_by?: string;
+  deletedBy?: string;
 
   @Prop({ required: false })
-  deleted_at?: Date;
+  deletedAt?: Date;
 
   @Prop({ required: false })
-  update_by?: string;
+  updateBy?: string;
 
   @Prop({ required: false })
-  update_at?: Date;
+  updateAt?: Date;
 
   constructor(data?: Partial<T>) {
     if (data) Object.assign(this, data);
