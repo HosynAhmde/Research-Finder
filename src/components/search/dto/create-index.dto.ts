@@ -1,7 +1,7 @@
 import { CreateDto } from '@Common/dto';
 import { IsArray, IsOptional, IsString } from 'class-validator';
 
-export class CreateIndex extends CreateDto<CreateIndex> {
+export class CreateIndex {
   @IsString()
   pmid: string;
 

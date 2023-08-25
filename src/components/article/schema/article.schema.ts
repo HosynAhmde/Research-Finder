@@ -2,25 +2,22 @@ import { Model } from '@Common/schemas';
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { type Document } from 'mongoose';
 
-@Schema({ timestamps: true })
+@Schema()
 export class Article extends Model<Article> {
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   title: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: [String] })
   authors: string[];
-
-  @Prop()
-  pmid: string;
 
   @Prop()
   affiliations: string[];
 
   @Prop()
-  journal_title: string;
+  journalTitle: string;
 
   @Prop()
-  place_of_publication: string;
+  placeOfPublication: string;
 
   @Prop({ required: true })
   abstract: string;
@@ -35,7 +32,7 @@ export class Article extends Model<Article> {
   issn: string;
 
   @Prop()
-  article_identifier: string;
+  articleIdentifier: string;
 }
 export type ArticleDocument = Article & Document;
 export const ArticleSchema = SchemaFactory.createForClass(Article);

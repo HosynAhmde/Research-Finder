@@ -6,34 +6,29 @@ export class UpdateArticleDto extends UpdateDto<UpdateArticleDto> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  pmid: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   title: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
+  @IsString({ each: true })
   @IsArray()
   authors: string[];
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
+  @IsString({ each: true })
   @IsArray()
   affiliations: string[];
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  journal_title: string;
+  journalTitle: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  place_of_publication: string;
+  placeOfPublication: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -42,11 +37,12 @@ export class UpdateArticleDto extends UpdateDto<UpdateArticleDto> {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  keyword: string[];
+  @IsString({ each: true })
+  @IsArray()
+  keywords: string[];
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  article_identifier: string;
+  articleIdentifier: string;
 }

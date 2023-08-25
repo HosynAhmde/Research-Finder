@@ -4,8 +4,8 @@ import { type ArticleDocument } from '../schema';
 
 @Exclude()
 export class ArticleSerializer extends Serializer<ArticleSerializer> {
-  @Expose()
-  pmid: string;
+  @Expose({ name: 'id' })
+  _id: string;
 
   @Expose()
   title: string;
@@ -17,19 +17,19 @@ export class ArticleSerializer extends Serializer<ArticleSerializer> {
   affiliations: string[];
 
   @Expose()
-  journal_title: string;
+  journalTitle: string;
 
   @Expose()
-  place_of_publication: string;
+  placeOfPublication: string;
 
   @Expose()
   abstract: string;
 
   @Expose()
-  keyword: string[];
+  keywords: string[];
 
   @Expose()
-  article_identifier: string;
+  articleIdentifier: string;
 
   static build(data: ArticleDocument): ArticleSerializer {
     return new ArticleSerializer(data);

@@ -1,19 +1,27 @@
-import { CreateArticleDto } from '@Components/article/dto';
-import { Body, ClassSerializerInterceptor, Controller, Get, Param, Post, Query, UseInterceptors } from '@nestjs/common';
-import { PostSearchResult } from './interface';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { SearchService } from './search.service';
-import { Article } from '@Components/article/schema';
 import { CreateIndex } from './dto';
-import { Filter } from '@Common/decorators';
-import { FilterDto } from '@Common/dto';
 import { QueryStringParserInterceptor } from '@Common/interceptors';
+import { AuthGuard, PolicyGuard } from '@Common/guards';
+import { SetResource } from '@Common/metadata';
+import { Resource } from '@Common/enum';
 
 @Controller('search')
-@UseInterceptors(QueryStringParserInterceptor, ClassSerializerInterceptor)
+@SetResource(Resource.Search)
 export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Post()
+  // @UseGuards(AuthGuard, PolicyGuard)
   async createIndex(@Body() article: CreateIndex) {
     return await this.searchService.indexArticle(article);
   }
@@ -31,7 +39,10 @@ export class SearchController {
   }
 
   @Get('keyword')
-  async searchByKeyword(@Query('title') title: string, @Query('abstract') abstract: string) {
+  async searchByKeyword(
+    @Query('title') title: string,
+    @Query('abstract') abstract: string,
+  ) {
     return await this.searchService.searchByKeyword(title, abstract);
   }
 }

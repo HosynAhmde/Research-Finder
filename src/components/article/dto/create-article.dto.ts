@@ -6,34 +6,29 @@ export class CreateArticleDto extends CreateDto<CreateArticleDto> {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  pmid: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   title: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsArray()
-  // @IsString()
+  @IsString({ each: true })
   authors: string[];
 
   @ApiProperty()
   @IsNotEmpty()
-  // @IsString()
   @IsArray()
+  @IsString({ each: true })
   affiliations: string[];
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  journal_title: string;
+  journalTitle: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  place_of_publication: string;
+  placeOfPublication: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -42,12 +37,12 @@ export class CreateArticleDto extends CreateDto<CreateArticleDto> {
 
   @ApiProperty()
   @IsNotEmpty()
-  // @IsString()
   @IsArray()
-  keyword: string[];
+  @IsString({ each: true })
+  keywords: string[];
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  article_identifier: string;
+  articleIdentifier: string;
 }
