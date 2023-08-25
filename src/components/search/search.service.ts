@@ -71,8 +71,6 @@ export class SearchService {
   }
 
   async fullTextSearch(@Query('query') query: string) {
-    console.log(query);
-
     // const { ELASTICSEARCH_INDEX } = this.configService.get();
     const body = await this.elasticSearch.search<PostSearchResult>({
       index: 'articles',
@@ -101,8 +99,6 @@ export class SearchService {
     @Query('title') title: string,
     @Query('abstract') abstract: string,
   ) {
-    console.log(title, abstract);
-
     if (!title && !abstract) {
       return [];
     }

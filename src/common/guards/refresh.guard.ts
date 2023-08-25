@@ -26,7 +26,6 @@ export class RefreshGuard implements CanActivate {
       request.cookies[COOKIE_NAME] ??
       request.headers.authorization?.split(/\s+/g)[1] ??
       request.body.refresh;
-    console.log(rawToken);
 
     if (!rawToken) throw new UnauthorizedException('AUTH.INVALID_TOKEN');
 
