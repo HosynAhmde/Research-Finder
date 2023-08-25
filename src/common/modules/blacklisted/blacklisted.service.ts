@@ -16,10 +16,17 @@ export class BlacklistedService {
   }
 
   public async put(str: string, ttl: number): Promise<'OK'> {
-    return await this.redisService.set(generateCacheKey(BLACKLISTED_PREFIX_KEY, str), 'true', 'EX', ttl);
+    return await this.redisService.set(
+      generateCacheKey(BLACKLISTED_PREFIX_KEY, str),
+      'true',
+      'EX',
+      ttl,
+    );
   }
 
   public async delete(str: string): Promise<number> {
-    return await this.redisService.del(generateCacheKey(BLACKLISTED_PREFIX_KEY, str));
+    return await this.redisService.del(
+      generateCacheKey(BLACKLISTED_PREFIX_KEY, str),
+    );
   }
 }

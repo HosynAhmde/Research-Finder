@@ -4,7 +4,12 @@ import { AES } from '@Common/helpers/aes.helper';
 import { AppRequest } from '@Common/modules';
 import { BlacklistedService } from '@Common/modules/blacklisted';
 import { JwtToken } from '@Components/auth/interface';
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 
@@ -26,15 +31,19 @@ export class AuthGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<AppRequest>();
 
-    const rawToken = request.headers.authorization?.split(/\s+/g)[1] ?? (request.query.token as string);
+    const rawToken =
+      request.headers.authorization?.split(/\s+/g)[1] ??
+      (request.query.token as string);
 
     if (!rawToken) throw new UnauthorizedException('AUTH.INVALID_TOKEN');
 
     try {
-      request.token = this.jwtService.verify<JwtToken>(AES.decrypt(rawToken), {
+      request.token = this.jwtService.verify<JwtToken>(rawToken, {
         secret: AUTH_CONFIG().ACCESS_TOKEN.secret,
       });
-      const isBlacklisted = await this.blacklisted.isBlacklisted(...Object.values(request.token));
+      const isBlacklisted = await this.blacklisted.isBlacklisted(
+        ...Object.values(request.token),
+      );
       return !isBlacklisted;
     } catch {
       throw new UnauthorizedException('AUTH.INVALID_TOKEN');

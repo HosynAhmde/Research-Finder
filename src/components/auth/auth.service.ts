@@ -15,6 +15,7 @@ import { AES, Time } from '@Common/helpers';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_CONFIG } from '@Common/configs';
 import { BlacklistedService } from '@Common/modules/blacklisted';
+import { log } from 'abacl';
 
 const { ACCESS_TOKEN, REFRESH_TOKEN } = AUTH_CONFIG();
 @Injectable()
@@ -35,7 +36,7 @@ export class AuthService {
 
     const password = await Bcrypt.hash(nonHashPassword);
 
-    await this.userService.create({ email, password });
+    const newUser = await this.userService.create({ email, password });
 
     return true;
   }
@@ -44,7 +45,7 @@ export class AuthService {
 
     const user = await this.userService.findOne({ query: { email } });
 
-    if (!user) throw new BadRequestException('AUTH.USER_NOT_FOUND');
+    if (!user) throw new BadRequestException('AUTH.INVALID_PASSWORD_OR_EMAIL');
 
     const isPasswordValid = await Bcrypt.compare(password, user.password);
 
@@ -55,7 +56,7 @@ export class AuthService {
   }
 
   async refreshToken(refreshToken: JwtToken) {
-    const session = await this.sessionService.findById({
+    const session = await this.sessionService.findOne({
       query: { id: refreshToken.session },
     });
 
@@ -113,18 +114,15 @@ export class AuthService {
 
   protected createToken(payload: JwtToken) {
     return {
-      accessToken: AES.encrypt(
-        this.jwtService.sign(payload, {
-          secret: ACCESS_TOKEN.secret,
-          expiresIn: ACCESS_TOKEN.expiration,
-        }),
-      ),
-      refreshToken: AES.encrypt(
-        this.jwtService.sign(payload, {
-          secret: REFRESH_TOKEN.secret,
-          expiresIn: REFRESH_TOKEN.expiration,
-        }),
-      ),
+      accessToken: this.jwtService.sign(payload, {
+        secret: ACCESS_TOKEN.secret,
+        expiresIn: ACCESS_TOKEN.expiration,
+      }),
+
+      refreshToken: this.jwtService.sign(payload, {
+        secret: REFRESH_TOKEN.secret,
+        expiresIn: REFRESH_TOKEN.expiration,
+      }),
     };
   }
 }
