@@ -1,14 +1,8 @@
 import { HttpStatus, Module, ValidationPipe } from '@nestjs/common';
-import { APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
-
-import { MetaGuard } from './meta.guard';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: MetaGuard,
-    },
     {
       provide: APP_PIPE,
       useFactory: () =>

@@ -1,0 +1,9 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "strictNullChecks": true
+    },
+    "include": ["src", "@types", "test"],
+    "exclude": ["node_modules"]
+  }
+  
