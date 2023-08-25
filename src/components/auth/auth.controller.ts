@@ -15,6 +15,7 @@ import { RefreshGuard } from '@Common/guards';
 import { ClearCookie, SetRefreshTokenInterceptor } from './interceptors';
 import { RefreshToken } from './decorators';
 import { AppRequest } from '@Common/modules';
+import { JwtToken } from './interface';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -37,7 +38,7 @@ export class AuthController {
   @UseGuards(RefreshGuard)
   @UseInterceptors(ClearCookie())
   @HttpCode(HttpStatus.OK)
-  async logout(@RefreshToken() refreshToken: AppRequest['refreshToken']) {
+  async logout(@RefreshToken() refreshToken: JwtToken): Promise<boolean> {
     return this.authService.logout(refreshToken);
   }
 
@@ -45,7 +46,11 @@ export class AuthController {
   @UseGuards(RefreshGuard)
   @UseInterceptors(SetRefreshTokenInterceptor)
   @HttpCode(HttpStatus.OK)
-  async refreshToken(@RefreshToken() refreshToken: AppRequest['refreshToken']): Promise<AuthSerializer> {
-    return AuthSerializer.build(await this.authService.refreshToken(refreshToken));
+  async refreshToken(
+    @RefreshToken() refreshToken: JwtToken,
+  ): Promise<AuthSerializer> {
+    return AuthSerializer.build(
+      await this.authService.refreshToken(refreshToken),
+    );
   }
 }
