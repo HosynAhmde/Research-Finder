@@ -15,7 +15,6 @@ import { AES, Time } from '@Common/helpers';
 import { JwtService } from '@nestjs/jwt';
 import { AUTH_CONFIG } from '@Common/configs';
 import { BlacklistedService } from '@Common/modules/blacklisted';
-import { log } from 'abacl';
 
 const { ACCESS_TOKEN, REFRESH_TOKEN } = AUTH_CONFIG();
 @Injectable()

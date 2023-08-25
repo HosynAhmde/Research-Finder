@@ -19,7 +19,7 @@ export class AuthorityInterceptor implements NestInterceptor {
         'Permission is required please check your code and use @PolicyGuard',
       );
 
-    if (permission.granted && permission.granted) return next.handle();
+    if (permission.hasAll() && permission.hasAny()) return next.handle();
 
     request.filter.query = {
       ...request.filter.query,

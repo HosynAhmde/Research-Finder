@@ -9,7 +9,10 @@ import { log } from 'console';
 
 @Injectable()
 export class SearchService {
-  constructor(private readonly elasticSearch: ElasticsearchService, private readonly configService: ConfigService) {}
+  constructor(
+    private readonly elasticSearch: ElasticsearchService,
+    private readonly configService: ConfigService,
+  ) {}
 
   // async createIndex() {
   //   const index = this.configService.get('ELASTICSEARCH_INDEX');
@@ -77,7 +80,14 @@ export class SearchService {
         query: {
           multi_match: {
             query: query,
-            fields: ['title', 'abstract', 'authors', 'affiliations', 'journal_title', 'keyword'],
+            fields: [
+              'title',
+              'abstract',
+              'authors',
+              'affiliations',
+              'journal_title',
+              'keyword',
+            ],
             type: 'phrase',
           },
         },
@@ -87,7 +97,10 @@ export class SearchService {
     return body.hits.hits.map((item: any) => item._source);
   }
 
-  async searchByKeyword(@Query('title') title: string, @Query('abstract') abstract: string) {
+  async searchByKeyword(
+    @Query('title') title: string,
+    @Query('abstract') abstract: string,
+  ) {
     console.log(title, abstract);
 
     if (!title && !abstract) {
@@ -111,6 +124,6 @@ export class SearchService {
         },
       },
     });
-    return body.hits.hits.map((item: any) => item?._source);
+    return body.hits.hits.map((item: any) => item._source);
   }
 }

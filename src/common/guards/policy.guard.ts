@@ -1,4 +1,4 @@
-import { policies, CHECK_POLICY_KEY, RESOURCE_KEY } from '@Common/constants';
+import { CHECK_POLICY_KEY, RESOURCE_KEY, abilities } from '@Common/constants';
 import { type Action, type Resource, type Role } from '@Common/enum';
 import { type AppRequest } from '@Common/modules/request';
 import { type CanActivate, type ExecutionContext } from '@nestjs/common';
@@ -16,15 +16,25 @@ export class PolicyGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest<AppRequest>();
 
-    if (!request.token) throw new Error('Policy guard must be used with @UseGuard(AuthGuard) decorator');
+    if (!request.token)
+      throw new Error(
+        'Policy guard must be used with @UseGuard(AuthGuard) decorator',
+      );
 
-    const resource = this.reflector.getAllAndOverride<Resource>(RESOURCE_KEY, [ctxHandler, ctxClass]);
+    const resource = this.reflector.getAllAndOverride<Resource>(RESOURCE_KEY, [
+      ctxHandler,
+      ctxClass,
+    ]);
 
-    if (!resource) throw new Error('Resource must be set with @SetResource decorator');
+    if (!resource)
+      throw new Error('Resource must be set with @SetResource decorator');
 
-    const action = this.reflector.getAllAndOverride<Action>(CHECK_POLICY_KEY, [ctxHandler, ctxClass]);
+    const action = this.reflector.getAllAndOverride<Action>(CHECK_POLICY_KEY, [
+      ctxHandler,
+      ctxClass,
+    ]);
 
-    const ac = new AccessControl<Role>(policies);
+    const ac = new AccessControl<Role>(abilities);
 
     const permission = ac.can(request.token.roles, action, resource);
 

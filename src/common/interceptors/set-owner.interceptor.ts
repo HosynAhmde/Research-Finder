@@ -14,6 +14,7 @@ export class SetOwnerInterceptor implements NestInterceptor {
 
     const request = context.switchToHttp().getRequest<AppRequest>();
     const token = request.token;
+    console.log(request);
 
     if ('files' in request) {
       request.files.forEach(file => {

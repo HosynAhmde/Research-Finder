@@ -30,10 +30,12 @@ export class AuthGuard implements CanActivate {
     if (isPublic) return true;
 
     const request = context.switchToHttp().getRequest<AppRequest>();
+    console.log(request);
 
     const rawToken =
       request.headers.authorization?.split(/\s+/g)[1] ??
       (request.query.token as string);
+    // console.log(rawToken);
 
     if (!rawToken) throw new UnauthorizedException('AUTH.INVALID_TOKEN');
 
@@ -41,9 +43,11 @@ export class AuthGuard implements CanActivate {
       request.token = this.jwtService.verify<JwtToken>(rawToken, {
         secret: AUTH_CONFIG().ACCESS_TOKEN.secret,
       });
+
       const isBlacklisted = await this.blacklisted.isBlacklisted(
         ...Object.values(request.token),
       );
+
       return !isBlacklisted;
     } catch {
       throw new UnauthorizedException('AUTH.INVALID_TOKEN');

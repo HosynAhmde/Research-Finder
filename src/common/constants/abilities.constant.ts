@@ -1,7 +1,7 @@
 import { Role } from '@Common/enum';
-import { Policy } from 'abacl';
+import { Ability } from 'abacl';
 
-export const policies: Policy<Role>[] = [
+export const abilities: Ability<Role>[] = [
   {
     subject: Role.Admin,
     action: 'any',
