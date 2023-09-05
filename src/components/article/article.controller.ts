@@ -11,7 +11,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateArticleDto, UpdateArticleDto } from './dto';
 import { ArticleSerializer } from './serialization/article.serializer';
 import { ArticleService } from './article.service';
@@ -31,8 +31,9 @@ import { SetResource } from '@Common/metadata';
 import { Action, Resource } from '@Common/enum';
 import { SetPolicy } from '@Common/metadata/set-policy.metadata';
 import { AuthGuard, PolicyGuard } from '@Common/guards';
-@ApiTags('article')
 @Controller('article')
+@ApiTags('article')
+@ApiBearerAuth()
 @SetResource(Resource.Article)
 @UseGuards(AuthGuard, PolicyGuard)
 @UseInterceptors(QueryStringParserInterceptor, ClassSerializerInterceptor)
@@ -45,6 +46,9 @@ export class ArticleController {
   @Post()
   @SetPolicy(Action.Create)
   @UseInterceptors(SetOwnerInterceptor)
+  @ApiOperation({
+    summary: 'Create article',
+  })
   async create(@Body() dto: CreateArticleDto) {
     return ArticleSerializer.build(await this.service.create(dto));
   }
@@ -52,6 +56,12 @@ export class ArticleController {
   @Get()
   @SetPolicy(Action.Read)
   @UseInterceptors(AuthorityInterceptor)
+  @ApiOperation({
+    summary: 'Get all articles',
+  })
+  @ApiQuery({
+    name: 'title', required: false ,
+  })
   async findAll(@Filter() filter: FilterDto<Article>) {
     return ArticlesSerializer.build(await this.service.find(filter.toObject()));
   }
@@ -59,6 +69,9 @@ export class ArticleController {
   @Get(':id')
   @SetPolicy(Action.Read)
   @UseInterceptors(AuthorityInterceptor)
+  @ApiOperation({
+    summary: 'Get article',
+  })
   async findOne(
     @Param('id', ParseObjectIdPipe) id: string,
     @Filter() filter: FilterDto<Article>,
@@ -71,6 +84,9 @@ export class ArticleController {
   @Put(':id')
   @SetPolicy(Action.Update)
   @UseInterceptors(AuthorityInterceptor)
+  @ApiOperation({
+    summary: 'Update article',
+  })
   async update(
     @Param('id', ParseObjectIdPipe) id: string,
     @Filter() filter: FilterDto<Article>,
@@ -84,6 +100,9 @@ export class ArticleController {
   @Delete(':id')
   @SetPolicy(Action.Read)
   @UseInterceptors(AuthorityInterceptor, SetDeletedByOwnerInterceptor)
+  @ApiOperation({
+    summary: 'Delete article',
+  })
   async delete(
     @Filter() filter: FilterDto<Article>,
     @Param('id', ParseObjectIdPipe) id: string,

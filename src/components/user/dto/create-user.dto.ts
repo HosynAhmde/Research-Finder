@@ -1,5 +1,6 @@
 import { CreateDto } from '@Common/dto';
 import { Role } from '@Common/enum';
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsEnum,
@@ -9,17 +10,22 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto extends CreateDto<CreateUserDto> {
+  @ApiProperty()
   @IsOptional()
   @IsString()
   name?: string;
 
+  @ApiProperty()
   @IsOptional()
   @IsString()
   last_name?: string;
 
+  @ApiProperty()
   @IsEmail()
   email: string;
 
+  @ApiProperty()
   @IsString()
   password: string;
+
 }

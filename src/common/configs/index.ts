@@ -4,3 +4,4 @@ export * from './auth.config';
 export * from './redis-options.config';
 export * from './middleware.config';
 export * from './s3.config';
+export * from './swagger.config'

@@ -33,6 +33,7 @@
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/platform-express": "^9.4.1",
     "@nestjs/swagger": "^6.3.0",
+    "@types/config": "3.3.1",
     "@types/cors": "2.8.13",
     "@types/elasticsearch": "5.0.40",
     "@types/multer": "1.4.7",

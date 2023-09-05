@@ -16,9 +16,7 @@ services:
     volumes:
       - redis:/var/lib/redis
 
-    environment:
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
+   
 
     restart: always
 
