@@ -16,14 +16,19 @@ import {
 import { Response } from 'express';
 
 import { AssetService } from './asset.service';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('assets')
+@ApiTags('assets')
 @UseGuards(AuthGuard, PolicyGuard)
 @SetResource(Resource.Asset)
 export class AssetController {
   constructor(private readonly service: AssetService) {}
 
   @Get(':id/download')
+  @ApiOperation({
+    summary: 'Download asset',
+  })
   @UseInterceptors(AuthorityInterceptor)
   @SetPolicy(Action.Read)
   async downloadById(
