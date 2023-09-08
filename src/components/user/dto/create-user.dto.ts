@@ -18,7 +18,7 @@ export class CreateUserDto extends CreateDto<CreateUserDto> {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  last_name?: string;
+  lastName?: string;
 
   @ApiProperty()
   @IsEmail()

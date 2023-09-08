@@ -17,6 +17,7 @@ import { RefreshToken } from './decorators';
 import { AppRequest } from '@Common/modules';
 import { JwtToken } from './interface';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { SetOwnerInterceptor } from '@Common/interceptors';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -26,7 +27,7 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register' })
-  @HttpCode(HttpStatus.CREATED)
+  @UseInterceptors(SetOwnerInterceptor)
   async register(@Body() registerDto: RegisterDto): Promise<boolean> {
     return this.authService.register(registerDto);
   }

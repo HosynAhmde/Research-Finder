@@ -10,5 +10,6 @@ import { SearchModule } from '@Components/search/search.module';
   imports: [MongooseModule.forFeature([{ name: Article.name, schema: ArticleSchema }]), SearchModule],
   providers: [ArticleService, ArticleRepository],
   controllers: [ArticleController],
+  exports: [ArticleService],
 })
 export class ArticleModule {}

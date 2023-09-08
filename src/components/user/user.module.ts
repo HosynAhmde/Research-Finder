@@ -14,6 +14,6 @@ import { AUTH_CONFIG } from '@Common/configs';
   ],
   controllers: [UserController],
   providers: [UserService, UserRepository],
-  exports: [UserService, UserRepository],
+  exports: [UserService],
 })
 export class UserModule {}
