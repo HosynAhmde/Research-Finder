@@ -6,25 +6,26 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class UpdateUserDto extends UpdateDto<UpdateUserDto> {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   lastName: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   email: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+@IsOptional()
+
   password: string;
 
   @IsOptional()
   @IsEnum(Role, { each: true })
-  roles?: Role[];
+  roles?: [Role];
 }

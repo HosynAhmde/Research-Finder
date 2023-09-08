@@ -8,12 +8,12 @@ export class User extends Model<User> {
   name: string;
 
   @Prop()
-  last_name: string;
+  lasName: string;
 
   @Prop()
   email: string;
 
-  @Prop({ type: [String], default: [Role.User] })
+  @Prop({ type: [String], enum: Role,default: [Role.User] })
   roles: [Role];
 
   @Prop()

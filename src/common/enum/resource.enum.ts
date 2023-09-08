@@ -5,4 +5,5 @@ export enum Resource {
   Article = 'article',
   Asset = 'asset',
   Search = 'search',
+  Arbitration = 'arbitration',
 }

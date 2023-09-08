@@ -13,10 +13,10 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateArticleDto, UpdateArticleDto } from './dto';
-import { ArticleSerializer } from './serialization/article.serializer';
+
 import { ArticleService } from './article.service';
 import { type Article, ArticleDocument } from './schema';
-import { ArticlesSerializer } from './serialization/articles.serializer';
+
 import { Filter } from '@Common/decorators/filter.decorator';
 import { FilterDto } from '@Common/dto/filter.dto';
 import { ParseObjectIdPipe } from '@Common/pipes';
@@ -31,6 +31,8 @@ import { SetResource } from '@Common/metadata';
 import { Action, Resource } from '@Common/enum';
 import { SetPolicy } from '@Common/metadata/set-policy.metadata';
 import { AuthGuard, PolicyGuard } from '@Common/guards';
+import { ArticleSerializer, ArticlesSerializer } from './serializers';
+import { Field } from '@Common/decorators';
 @Controller('article')
 @ApiTags('article')
 @ApiBearerAuth()
@@ -90,7 +92,7 @@ export class ArticleController {
   async update(
     @Param('id', ParseObjectIdPipe) id: string,
     @Filter() filter: FilterDto<Article>,
-    @Body() dto: UpdateArticleDto,
+    @Field() dto: UpdateArticleDto,
   ) {
     return ArticleSerializer.build(
       await this.service.updateOne(filter.toObject({ id }), dto),

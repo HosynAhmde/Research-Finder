@@ -1,6 +1,7 @@
 import { UpdateDto } from '@Common/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { StatusArticle } from '../enum';
 
 export class UpdateArticleDto extends UpdateDto<UpdateArticleDto> {
   @ApiProperty()
@@ -45,4 +46,12 @@ export class UpdateArticleDto extends UpdateDto<UpdateArticleDto> {
   @IsNotEmpty()
   @IsString()
   articleIdentifier: string;
+
+  @ApiProperty()
+  @IsEnum(StatusArticle, { each: true  })
+  status:StatusArticle
+
+  @ApiProperty()
+  @IsString()
+  feedback: string
 }

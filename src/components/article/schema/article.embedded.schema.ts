@@ -1,10 +1,7 @@
-import { Model } from '@Common/schemas';
-import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
-import { type Document } from 'mongoose';
-import { StatusArticle } from '../enum';
+import { Prop } from "@nestjs/mongoose";
+import { StatusArticle } from "../enum";
 
-@Schema()
-export class Article extends Model<Article> {
+export class ArticleEmbedded{
   @Prop({ required: true, type: String })
   title: string;
 
@@ -38,8 +35,7 @@ export class Article extends Model<Article> {
   @Prop()
   feedback: string;
 
-  @Prop({type: String, enum: StatusArticle,default: StatusArticle.Pending,index:true})
+  @Prop({type: String, enum: StatusArticle})
   status: StatusArticle;
+
 }
-export type ArticleDocument = Article & Document;
-export const ArticleSchema = SchemaFactory.createForClass(Article);

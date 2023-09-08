@@ -34,9 +34,12 @@ export class PolicyGuard implements CanActivate {
       ctxClass,
     ]);
 
+
     const ac = new AccessControl<Role>(abilities);
 
+
     const permission = ac.can(request.token.roles, action, resource);
+
 
     if (!permission.granted) return false;
 

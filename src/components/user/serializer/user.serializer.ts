@@ -9,7 +9,7 @@ export class UserSerializer extends Serializer<UserSerializer> {
   name: string;
 
   @Expose()
-  last_name: string;
+  lastName: string;
 
   @Expose()
   email: string;
