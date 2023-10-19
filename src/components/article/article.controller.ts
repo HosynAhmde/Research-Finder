@@ -7,12 +7,13 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Res,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
-import { CreateArticleDto, UpdateArticleDto } from './dto';
+import { CreateArticleDto, QueryStringArticle, UpdateArticleDto } from './dto';
 
 import { ArticleService } from './article.service';
 import { type Article, ArticleDocument } from './schema';
@@ -64,8 +65,8 @@ export class ArticleController {
   @ApiQuery({
     name: 'title', required: false ,
   })
-  async findAll(@Filter() filter: FilterDto<Article>) {
-    return ArticlesSerializer.build(await this.service.find(filter.toObject()));
+  async findAll(@Filter() filter: FilterDto<Article>,@Query() query:QueryStringArticle) {
+    return ArticlesSerializer.build(await this.service.find(filter.toObject({...query})));
   }
 
   @Get(':id')

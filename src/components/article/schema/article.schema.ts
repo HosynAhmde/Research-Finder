@@ -5,7 +5,7 @@ import { StatusArticle } from '../enum';
 
 @Schema()
 export class Article extends Model<Article> {
-  @Prop({ required: true, type: String })
+  @Prop({ required: true, type: String ,index:true})
   title: string;
 
   @Prop({ required: true, type: [String] })
@@ -20,10 +20,10 @@ export class Article extends Model<Article> {
   @Prop()
   placeOfPublication: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true,index:true })
   abstract: string;
 
-  @Prop()
+  @Prop({index:true})
   keywords: string[];
 
   @Prop()

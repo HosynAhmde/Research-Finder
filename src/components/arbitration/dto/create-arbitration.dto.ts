@@ -15,4 +15,7 @@ refereeId:string[]
 @Type(() => ArticleEmbeddedDto)
 article: ArticleEmbeddedDto;
 
+@IsString()
+feedback:string
+
 }

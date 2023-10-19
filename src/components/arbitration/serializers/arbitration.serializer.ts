@@ -16,6 +16,9 @@ export class ArbitrationSerializer extends Serializer<ArbitrationSerializer> {
     @Type(()=>ArticleSerializer)
     article: Record<string,any>
 
+    @Expose()
+    feedback:string
+
     static build(data: ArbitrationDocument): ArbitrationSerializer {
         return new ArbitrationSerializer(data);
     }
