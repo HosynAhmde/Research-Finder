@@ -13,6 +13,9 @@ export class Arbitration extends Model<Arbitration> {
     @Prop({ type:ArticleEmbedded,_id:false})
     article: ArticleEmbedded
 
+    @Prop()
+    feedback: string;
+
 }
 export type ArbitrationDocument = Arbitration & Document;
 export const ArbitrationSchema = SchemaFactory.createForClass(Arbitration); 
